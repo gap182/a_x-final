@@ -66,6 +66,10 @@ OPEN (11, file='z_mb_outliers', status='unknown', form='formatted')
 OPEN (12, file='final1', status='unknown', form='formatted')
 OPEN (18, file='probe1', status='unknown', form='formatted')
 OPEN (17, file='probe', status='unknown', form='formatted')
+OPEN (19, file='probe2', status='unknown', form='formatted')
+OPEN (20, file='probe3', status='unknown', form='formatted')
+OPEN (21, file='Theta', status='unknown', form='formatted')
+
 
 WRITE(7,"(7X,A,8X,A,9X,A)") 'zcmb', 'dz', 'name'
 WRITE(8,"(7X,A,8X,A,9X,A)") 'mb', 'dmb', 'name'
@@ -129,7 +133,7 @@ CALL matrices(z_min,z_max,q_0,j_0,A,Th,Y,V,Inv,AT)
 !ReeInv -> Ree-1
 
 
-CALL mat_mult(arrays_dimension_outliers,arrays_dimension_outliers,2,Inv,A,Re)
+CALL mat_mult(2,arrays_dimension_outliers,arrays_dimension_outliers,AT,Inv,Re)
 
 !--------------------------------------
 !Probe of the multiplication subroutine
@@ -147,18 +151,42 @@ CALL mat_mult(arrays_dimension_outliers,arrays_dimension_outliers,2,Inv,A,Re)
 ! ! WRITE(*,*) prueba2
 !--------------------------------------
 
-CALL mat_mult(2,arrays_dimension_outliers,2,AT,Re,Ree)
+CALL mat_mult(2,arrays_dimension_outliers,2,Re,A,Ree)
 
-!------------------------------
-!Probe of the multiplication 
-!
+! ------------------------------
+! Probe of the multiplication 
+
 ! WRITE(17,*) Ree(1,1), Ree(1,2)
 ! WRITE(17,*) Ree(2,1), Ree(2,2)
-!!!!!
-!
-!------------------------------
+!!!!
 
+! ------------------------------
 
+CALL matinv2(Ree,ReeInv)
 
+! ! !------------------------------
+! ! !Probe of the inverse 
+! ! !
+! WRITE(19,*) ReeInv(1,1), ReeInv(1,2)
+! WRITE(19,*) ReeInv(2,1), ReeInv(2,2)
+! ! !!!!!
+! ! !
+! ! !------------------------------
+
+CALL mat_mult(2,2,arrays_dimension_outliers,ReeInv,Re,L)
+
+! ! !------------------------------
+! ! !Probe of product
+! ! ! !
+!     DO i=1,arrays_dimension_outliers+1
+! WRITE(20,*) L(1,i), L(2,i)
+!     end do
+! ! ! !!!!!
+! ! !
+! ! !------------------------------
+
+CALL mat_mult(2,arrays_dimension_outliers,1,L,Y,Th)
+
+WRITE(21,*) Th(1,1), Th(2,1)
 
 END PROGRAM a_x_final

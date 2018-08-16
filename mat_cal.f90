@@ -6,7 +6,7 @@ MODULE mat_cal
     SUBROUTINE matrices(z_min_1,z_max_1,q_0_1,j_0_1,A_1,Th_1,Y_1,V_1,Inv_1,AT_1)
         USE definitions
         REAL(dp), INTENT(IN) :: z_min_1,z_max_1,q_0_1,j_0_1
-        REAL(dp), ALLOCATABLE,  INTENT(OUT) :: A_1(:,:),Th_1(:),Y_1(:),V_1(:,:),Inv_1(:,:),AT_1(:,:)
+        REAL(dp), ALLOCATABLE,  INTENT(OUT) :: A_1(:,:),Th_1(:,:),Y_1(:,:),V_1(:,:),Inv_1(:,:),AT_1(:,:)
         
         OPEN (11, file='z_mb_outliers', status='unknown', form='formatted')
         OPEN (9, file='z_mb', status='unknown', form='formatted')
@@ -42,21 +42,21 @@ MODULE mat_cal
         
         OPEN (13, file='final', status='old', form='formatted') 
         
-        ALLOCATE(A_1(arrays_dimension_outliers,2),Th_1(2),Y_1(arrays_dimension_outliers), &
+        ALLOCATE(A_1(arrays_dimension_outliers,2),Th_1(2,1),Y_1(arrays_dimension_outliers,1), &
         V_1(arrays_dimension_outliers,arrays_dimension_outliers), &
         Inv_1(arrays_dimension_outliers,arrays_dimension_outliers), &
-        AT_1(2,arrays_dimension_outliers), Re(arrays_dimension_outliers,2), &
-        Ree(2,2))
+        AT_1(2,arrays_dimension_outliers), Re(2,arrays_dimension_outliers), &
+        Ree(2,2), ReeInv(2,2),L(2,arrays_dimension_outliers))
         
         A_1(:,:)=0.0_dp
-        Th_1(:)=0.0_dp
-        Y_1(:)=0.0_dp
+        Th_1(:,:)=0.0_dp
+        Y_1(:,:)=0.0_dp
         V_1(:,:)=0.0_dp
         Inv_1(:,:)=0.0_dp
         
         DO i=1, arrays_dimension_outliers
         read(13,*) logz(i),mb_02(i),dmb(i)
-        Y_1(i)=mb_02(i)
+        Y_1(i,1)=mb_02(i)
         END DO
 ! 
 ! 
@@ -110,172 +110,28 @@ MODULE mat_cal
         
     END SUBROUTINE mat_mult
     
-!  SUBROUTINE inverse(g,t,fin)
-! !============================================================
-! ! Inverse matrix
-! ! Method: Based on Doolittle LU factorization for Ax=b
-! ! Alex G. December 2009
-! !-----------------------------------------------------------
-! ! input ...
-! ! a(n,n) - array of coefficients for matrix A
-! ! n      - dimension
-! ! output ...
-! ! c(n,n) - inverse matrix of A
-! ! comments ...
-! ! the original matrix a(n,n) will be destroyed 
-! ! during the calculation
-! !===========================================================
-! implicit none
-! INTEGER, PARAMETER :: dp = selected_real_kind(14,200)
-! integer n
-! REAL(dp), ALLOCATABLE, INTENT(INOUT) :: g(:,:)
-! REAL(dp), ALLOCATABLE :: L(:,:), U(:,:), h(:), t(:), x(:)
-! REAL(dp), ALLOCATABLE, INTENT(OUT) :: fin(:,:)
-! REAL(dp) :: coeff
-! integer i, j, k
-! 
-! ALLOCATE(L(n,n),U(n,n),h(n),t(n),x(n))
-! 
-! ! step 0: initialization for matrices L and U and b
-! ! Fortran 90/95 aloows such operations on matrices
-! L=0.0_dp
-! U=0.0_dp
-! h=0.0_dp
-!  
-!  coeff=0.0_dp
-! 
-! ! step 1: forward elimination
-! do k=1, n-1
-!    do i=k+1,n
-!       coeff=g(i,k)/g(k,k)
-!       L(i,k) = coeff
-!       do j=k+1,n
-!          g(i,j) = g(i,j)-coeff*g(k,j)
-!       end do
-!    end do
-! end do
-! 
-! ! Step 2: prepare L and U matrices 
-! ! L matrix is a matrix of the elimination coefficient
-! ! + the diagonal elements are 1.0
-! do i=1,n
-!   L(i,i) = 1.0
-! end do
-! ! U matrix is the upper triangular part of A
-! do j=1,n
-!   do i=1,j
-!     U(i,j) = g(i,j)
-!   end do
-! end do
-! 
-! ! Step 3: compute columns of the inverse matrix C
-! do k=1,n
-!   h(k)=1.0
-!   t(1) = h(1)
-! ! Step 3a: Solve Ld=b using the forward substitution
-!   do i=2,n
-!     t(i)=h(i)
-!     do j=1,i-1
-!       t(i) = t(i) - L(i,j)*t(j)
-!     end do
-!   end do
-! ! Step 3b: Solve Ux=d using the back substitution
-!   x(n)=t(n)/U(n,n)
-!   do i = n-1,1,-1
-!     x(i) = t(i)
-!     do j=n,i+1,-1
-!       x(i)=x(i)-U(i,j)*x(j)
-!     end do
-!     x(i) = x(i)/u(i,i)
-!   end do
-! ! Step 3c: fill the solutions x(n) into column k of C
-!   do i=1,n
-!     fin(i,k) = x(i)
-!   end do
-!   h(k)=0.0
-! end do
-! END SUBROUTINE inverse
-
- subroutine inverse(As,Cs,Ns)
-!============================================================
-! Inverse matrix
-! Method: Based on Doolittle LU factorization for Ax=b
-! Alex G. December 2009
-!-----------------------------------------------------------
-! input ...
-! a(n,n) - array of coefficients for matrix A
-! n      - dimension
-! output ...
-! c(n,n) - inverse matrix of A
-! comments ...
-! the original matrix a(n,n) will be destroyed 
-! during the calculation
-!===========================================================
-
-USE definitions
-integer n
-REAL(dp)  As(n,n), Cs(n,n)
-REAL(dp)  Ls(n,n), Us(n,n), Bs(n), Ds(n), Xs(n)
-REAL(dp)  coeff
+    subroutine matinv2(Ainv,B)
+  
+    implicit NONE
 
 
-! step 0: initialization for matrices L and U and b
-! Fortran 90/95 aloows such operations on matrices
-L=0.0
-U=0.0
-b=0.0
 
-! step 1: forward elimination
-do k=1, n-1
-   do i=k+1,n
-      coeff=As(i,k)/As(k,k)
-      Ls(i,k) = coeff
-      do j=k+1,n
-         As(i,j) = As(i,j)-coeff*As(k,j)
-      end do
-   end do
-end do
+    !! Performs a direct calculation of the inverse of a 2×2 matrix.
+    INTEGER, PARAMETER :: dp = selected_real_kind(14,200)
+    REAL(dp), intent(in) :: Ainv(2,2)   !! Matrix
+    REAL(dp)             :: B(2,2)   !! Inverse matrix
+    REAL(dp)             :: detinv
 
-! Step 2: prepare L and U matrices 
-! L matrix is a matrix of the elimination coefficient
-! + the diagonal elements are 1.0
-do i=1,n
-  Ls(i,i) = 1.0
-end do
-! U matrix is the upper triangular part of A
-do j=1,n
-  do i=1,j
-    Us(i,j) = As(i,j)
-  end do
-end do
+    ! Calculate the inverse determinant of the matrix
+    detinv = 1/(Ainv(1,1)*Ainv(2,2) - Ainv(1,2)*Ainv(2,1))
 
-! Step 3: compute columns of the inverse matrix C
-do k=1,n
-  Bs(k)=1.0
-  Ds(1) = Bs(1)
-! Step 3a: Solve Ld=b using the forward substitution
-  do i=2,n
-    Ds(i)=Bs(i)
-    do j=1,i-1
-      Ds(i) = Ds(i) - Ls(i,j)*Ds(j)
-    end do
-  end do
-! Step 3b: Solve Ux=d using the back substitution
-  Xs(n)=Ds(n)/Us(n,n)
-  do i = n-1,1,-1
-    Xs(i) = Ds(i)
-    do j=n,i+1,-1
-      Xs(i)=Xs(i)-Us(i,j)*Xs(j)
-    end do
-    Xs(i) = Xs(i)/Us(i,i)
-  end do
-! Step 3c: fill the solutions x(n) into column k of C
-  do i=1,n
-    Cs(i,k) = Xs(i)
-  end do
-  Bs(k)=0.0
-end do
-end subroutine inverse
+    ! Calculate the inverse of the matrix
+    B(1,1) = +detinv * Ainv(2,2)
+    B(2,1) = -detinv * Ainv(2,1)
+    B(1,2) = -detinv * Ainv(1,2)
+    B(2,2) = +detinv * Ainv(1,1)
+    end subroutine                
  
+
 
 END MODULE mat_cal
