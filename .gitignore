@@ -1,0 +1,14 @@
+*.o
+final
+final1
+probe
+probe_mul_mat
+probe1
+Values_mb
+Values_z
+z_mb
+z_mb_outliers
+graph
+*.out 
+a_x_fina
+a_x_final
