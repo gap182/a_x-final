@@ -154,7 +154,7 @@ CALL mat_mult(2,arrays_dimension_outliers,2,AT,Re,Ree)
 !
 ! WRITE(17,*) Ree(1,1), Ree(1,2)
 ! WRITE(17,*) Ree(2,1), Ree(2,2)
-!
+!!!!!
 !
 !------------------------------
 
