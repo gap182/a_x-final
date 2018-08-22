@@ -13,7 +13,7 @@ ReeInv(:,:), L(:,:)
 CHARACTER(len=10), DIMENSION(21) :: table
 CHARACTER(len=10), ALLOCATABLE :: name(:)
 ! CHARACTER(len=120) :: format="(*, 2F8.6, F1.0, F9.6, F8.6, F9.6, F8.6, F9.6, &
-! F8.6, F9.6, F8.6, F12.6, F8.6, 3F9.6, F1.0, 2F10.6, F9.6)"!!
+! F8.6, F9.6, F8.6, F12.6, F8.6, 3F9.6, F1.0, 2F10.6, F9.6)"!!!!
 
 
 
