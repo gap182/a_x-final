@@ -186,7 +186,7 @@ CALL mat_mult(2,2,arrays_dimension_outliers,ReeInv,Re,L)
 !     end do
 ! ! ! !!!!!
 ! ! !
-! ! !------------------------------
+! ! !------------------------------!
 
 CALL mat_mult(2,arrays_dimension_outliers,1,L,Y,Th)
 
