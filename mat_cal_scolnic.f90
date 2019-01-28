@@ -18,30 +18,36 @@ MODULE mat_cal
         
         READ(9,*)
         arrays_dimension_outliers=0
-        DO i=1, arrays_dimension   
-            ! READ(9,*) zcmb(i),mb(i)    
-                IF (zcmb(i) > z_min_1 .and. zcmb(i) < z_max_1) THEN
-                    IF (x1(i) < 3.0 .and. x1(i)>-3.0) THEN
-                        IF (paramc(i) < 0.3 .and. paramc(i)>-0.3) THEN
-                            IF (fitprob(i)>0.001) THEN
-                                IF (pkmjde(i)<2.0) THEN
-                                    IF (x1e(i)<1.5) THEN
-                                        IF (dmb(i)<0.2) THEN
-                    write(11,*) zcmb(i),mb(i)
-                        logz(i)=LOG10(299792.458*zcmb(i)*(1+0.5*(1-q_0_1)*zcmb(i)-((1-q_0_1-3*(q_0_1**2)+j_0_1)*(zcmb(i))**2)/6))
-                        
-                        mb_02(i)=0.2*mb(i)
-         
-                    write(12,*) logz(i),mb_02(i),dmb(i)
-                    write(14,*) logz(i),mb_02(i)
-        arrays_dimension_outliers=arrays_dimension_outliers+1
-                                        END IF 
-                                    END IF 
-                                END IF 
-                            END IF 
-                        END IF
-                    END IF 
-                END IF
+        DO i=1, arrays_dimension     
+        ! WRITE(*,*) zcmb(i)
+            ! IF (zcmb(i) > z_min_1 .and. zcmb(i) < z_max_1) THEN
+                ! IF (x1(i) < 3.0 .and. x1(i)>-3.0) THEN
+                    ! IF (paramc(i) < 0.3 .and. paramc(i)>-0.3) THEN 
+                        ! IF (fitprob(i)>0.001) THEN
+                            ! IF (pkmjde(i)<2.0) THEN
+                                ! IF (x1e(i)<1.0) THEN
+                                    ! IF (trestmax(i)>2.0) THEN
+                                        ! IF (mwebv(i)<0.2) THEN
+                                            ! IF (x0e(i)<0.5) THEN
+                                    ! IF (pkmjd(i)<50000.0) THEN
+                                write(11,*) zcmb(i),mb(i)
+                                logz(i)=LOG10(299792.458*zcmb(i)*(1+0.5*(1-q_0_1)*zcmb(i)&
+                                -((1-q_0_1-3*(q_0_1**2)+j_0_1)*(zcmb(i))**2)/6))
+                                
+                                mb_02(i)=0.2*mb(i)
+                 
+                                 write(12,*) logz(i),mb_02(i),dmb(i)
+                                 write(14,*) logz(i),mb_02(i)
+                                 arrays_dimension_outliers=arrays_dimension_outliers+1
+                                            ! END IF
+                                        ! END IF
+                                    ! END IF 
+                !                  END IF 
+                !             END IF
+                !         END IF
+                !     END IF 
+                ! END IF    
+            ! END IF
         END DO
             
         CLOSE(9)
