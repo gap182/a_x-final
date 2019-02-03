@@ -8,6 +8,8 @@ READ(*,*) z_max
 READ(*,*) q_0
 READ(*,*) j_0
 
+WRITE(*,*) z_min, z_max
+
 OPEN (10, file='hlsp_ps1cosmo_panstarrs_gpc1_all_model_v1_ancillary-c11.fitres',FORM='FORMATTED',STATUS='OLD',ACTION='READ')
 arrays_dimension=0
 

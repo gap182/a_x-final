@@ -35,6 +35,7 @@ MODULE mat_cal
                     write(12,*) logz(i),mb_02(i),dmb(i)
                     write(14,*) logz(i),mb_02(i)
         arrays_dimension_outliers=arrays_dimension_outliers+1
+        write(900,*) i 
                                         END IF 
                                     END IF 
                                 END IF 
