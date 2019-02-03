@@ -11,11 +11,20 @@ snrmax3(:), pkmjd(:), pkmjde(:), x1(:), x1e(:), paramc(:), paramce(:), x0(:), x0
 cov_x1_x0(:), cov_c_x0(:), ndof(:), fitchi2(:), fitprob(:), ra(:), decl(:), tgapmax(:), mu(:), &
 mue(:), mures(:), mupull(:), sbar(:), cbar(:), errcode(:),  trestmin(:), trestmax(:), &
 mwebv(:), ys(:)
+
+!variables nuevas
+integer :: disc, col, intcol, charcol
+CHARACTER(80) :: name, 
+real(dp), allocatable :: realmatrix(:,:)
+integer, allocatable :: intmatrix(:,:), intpos(:), charpos(:)
+character, allocatable :: charmatrix(:,:)
+
+
 ! INTEGER, ALLOCATABLE :: 
 ! CHARACTER(len=7) :: name
 ! CHARACTER(len=10), ALLOCATABLE :: T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21
 CHARACTER(len=10), DIMENSION(21) :: table
-CHARACTER(len=7), ALLOCATABLE :: name(:), field(:), cidint(:), idsurvey(:), ty(:), trash(:)
+CHARACTER(len=7), ALLOCATABLE :: field(:), cidint(:), idsurvey(:), ty(:), trash(:)
 CHARACTER(len=3), ALLOCATABLE :: nome(:)
 ! CHARACTER(len=120) :: format="(*, 2F8.6, F1.0, F9.6, F8.6, F9.6, F8.6, F9.6, &
 ! !!!F8.6, F9.6, F8.6, F12.6, F8.6, 3F9.6, F1.0, 2F10.6, F9.6)"!!!!
