@@ -1,0 +1,10 @@
+0.01    !zmin
+0.023     !zmax
+-0.55   !q_0
+1       !j_0
+hlsp_ps1cosmo_panstarrs_gpc1_all_model_v1_ancillary-c11.fitres	!name
+69	!initial rows to discard
+54	!number of columns in the data
+8	!number of columns with integer data
+3	!number of columns with character data
+

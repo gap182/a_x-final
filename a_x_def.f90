@@ -1,22 +1,21 @@
 program a_x_def
-implicit none
 
 USE definitions
 USE mat_cal
 
+!Parámetros de restricción 
 READ(*,*) z_min
 READ(*,*) z_max 
 READ(*,*) q_0
 READ(*,*) j_0
-read(*,*) name 
-read(*,*) disc
-read(*,*) col 
-read(*,*) intcol
-read(*,*) charcol
+!Parámetros del archivo de datos
+read(*,*) name  !nombre del archivo incluyendo la extensión
+read(*,*) disc  !número de filas iniciales para descartar de la lectura
+read(*,*) col   !número de columnas a leer del archivo
+read(*,*) intcol    !número de columnas del archivo que contienen datos enteros =
+read(*,*) charcol   !número de columnas del archivo que contienen datos caracteres
 
-
- 
-open(10, file=name, form='formatted', satus='old',action='read')
+open(10, file=name, form='formatted', status='old',action='read')
 
 arrays_dimension=0
 
@@ -43,13 +42,21 @@ arrays_dimension=0
 
 close(10)
 
-
-
 write(*,*) 'The number of data points are:', arrays_dimension
 
 allocate(realmatrix(arrays_dimension,col),intmatrix(arrays_dimension,col),charmatrix(arrays_dimension,col), &
-intpos(intcol),charpos(charcol))
+intpos(intcol),charpos(charcol),logz(arrays_dimension), mb_02(arrays_dimension), dmb(arrays_dimension))
 
+!Se debe agregar manualmente el arreglo intpos y charpos que contienen
+!la posición de columnas que contienen enteros y caracteres respectivamente
 
+intpos = (/3,4,5,7,13,32,47,54/)
+charpos = (/1,2,6/)
+
+call read_data(name,col,arrays_dimension,realmatrix,intcol,intmatrix,charcol,charmatrix,disc,intpos,charpos)
+
+CALL matrices(z_min,z_max,q_0,j_0,A,Th,Y,V,Inv,AT)
+
+write(*,*) 'the number of fitter data are:', arrays_dimension_outliers 
 
 end program a_x_def

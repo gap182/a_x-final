@@ -14,10 +14,10 @@ mwebv(:), ys(:)
 
 !variables nuevas
 integer :: disc, col, intcol, charcol
-CHARACTER(80) :: name, 
+CHARACTER(80) :: name
 real(dp), allocatable :: realmatrix(:,:)
 integer, allocatable :: intmatrix(:,:), intpos(:), charpos(:)
-character, allocatable :: charmatrix(:,:)
+character(30), allocatable :: charmatrix(:,:)
 
 
 ! INTEGER, ALLOCATABLE :: 

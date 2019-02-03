@@ -77,7 +77,7 @@ subroutine read_data(name,col,row, a,intcol,b,charcol,c,disc,intpos,charpos)
                 end do
             end do
 
-            !Use this to probe that the data saved is correct
+            !!!! Use this to probe that the data saved is correct
             ! do i=1,row    
             !     write(100,*) (a(i,j), j=1, col)
             !     write(200,*) (b(i,j), j=1, col)

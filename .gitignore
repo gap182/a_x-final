@@ -13,3 +13,5 @@ graph
 *.out 
 a_x_fina
 a_x_final
+definitions.mod
+fort.*

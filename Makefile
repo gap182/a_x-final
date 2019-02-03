@@ -1,10 +1,12 @@
 FF90=gfortran
 
-definitions:
+definitions.o:
 	$(FF90) -c definitions.f90
-mat_cal: definitions.o
+mat_cal.o: definitions.o
 	$(FF90) -c mat_cal.f90
-a_x_2: definitions.o mat_cal.o
-	$(FF90) -o a_x_2 a_x_final.f90 definitions.o mat_cal.o
+read_data_comp.o:
+	$(FF90) -c read_data_comp.f90
+a_x_def: definitions.o mat_cal.o read_data_comp.o
+	$(FF90) -o a_x_def a_x_def.f90 definitions.o read_data_comp.o mat_cal.o
 clean:
-	rm *.o
+	rm *.o *.mod
