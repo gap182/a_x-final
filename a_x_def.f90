@@ -55,6 +55,12 @@ charpos = (/1,2,6/)
 
 call read_data(name,col,arrays_dimension,realmatrix,intcol,intmatrix,charcol,charmatrix,disc,intpos,charpos)
 
+do i=1,arrays_dimension 
+    write(600,*) realmatrix(i,8)
+end do
+
+write(*,*) realmatrix(700,8)
+
 CALL matrices(z_min,z_max,q_0,j_0,A,Th,Y,V,Inv,AT)
 
 write(*,*) 'the number of fitter data are:', arrays_dimension_outliers 

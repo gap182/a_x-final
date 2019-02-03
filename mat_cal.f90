@@ -21,29 +21,29 @@ MODULE mat_cal
 
 
         DO i=1, arrays_dimension   
-            !  write(*,*) realmatrix(i,8)
+            
                 IF (realmatrix(i,8) > z_min_1 .and. realmatrix(i,8) < z_max_1) THEN
                     IF (realmatrix(i,21) < 3.0 .and. realmatrix(i,21)>-3.0) THEN
                         IF (realmatrix(i,23) < 0.3 .and. realmatrix(i,23)>-0.3) THEN
                             IF (realmatrix(i,34)>0.001) THEN
-                                ! IF (realmatrix(i,19)<2.0) THEN
+                                IF (realmatrix(i,20)<2.0) THEN
                                     IF (realmatrix(i,22)<1.5) THEN
                                         IF (realmatrix(i,26)<0.2) THEN
-                                        
-                    write(11,*) realmatrix(i,8),realmatrix(i,25)
-                        logz(i)=LOG10(299792.458*realmatrix(i,8)*&
-                        (1+0.5*(1-q_0_1)*realmatrix(i,8)-((1-q_0_1-3*(q_0_1**2)+j_0_1)*(realmatrix(i,8))**2)/6))
+                                  write(100,*) i     
+                    ! write(11,*) realmatrix(i,8),realmatrix(i,25)
+                    !     logz(i)=LOG10(299792.458*realmatrix(i,8)*&
+                    !     (1+0.5*(1-q_0_1)*realmatrix(i,8)-((1-q_0_1-3*(q_0_1**2)+j_0_1)*(realmatrix(i,8))**2)/6))
                     
-                        mb_02(i)=0.2*realmatrix(i,25)
+                    !     mb_02(i)=0.2*realmatrix(i,25)
          
-                    write(12,*) logz(i),mb_02(i),realmatrix(i,26)
-                    write(14,*) logz(i),mb_02(i)
+                    ! write(12,*) logz(i),mb_02(i),realmatrix(i,26)
+                    ! write(14,*) logz(i),mb_02(i)
         arrays_dimension_outliers=arrays_dimension_outliers+1
         ! write(*,*) "I'm here", arrays_dimension_outliers
         ! write(*,*) "I'm here"
                                         END IF 
                                     END IF 
-                                ! END IF 
+                                END IF 
                             END IF 
                         END IF
                     END IF 
@@ -59,53 +59,53 @@ MODULE mat_cal
 
         !Open the file with logz and 0.2mb
         
-        OPEN (13, file='final', status='old', form='formatted') 
+!         OPEN (13, file='final', status='old', form='formatted') 
         
-        ALLOCATE(A_1(arrays_dimension_outliers,2),Th_1(2,1),Y_1(arrays_dimension_outliers,1), &
-        V_1(arrays_dimension_outliers,arrays_dimension_outliers), &
-        Inv_1(arrays_dimension_outliers,arrays_dimension_outliers), &
-        AT_1(2,arrays_dimension_outliers), Re(2,arrays_dimension_outliers), &
-        Ree(2,2), ReeInv(2,2),L(2,arrays_dimension_outliers))
+!         ALLOCATE(A_1(arrays_dimension_outliers,2),Th_1(2,1),Y_1(arrays_dimension_outliers,1), &
+!         V_1(arrays_dimension_outliers,arrays_dimension_outliers), &
+!         Inv_1(arrays_dimension_outliers,arrays_dimension_outliers), &
+!         AT_1(2,arrays_dimension_outliers), Re(2,arrays_dimension_outliers), &
+!         Ree(2,2), ReeInv(2,2),L(2,arrays_dimension_outliers))
         
-        A_1(:,:)=0.0_dp
-        Th_1(:,:)=0.0_dp
-        Y_1(:,:)=0.0_dp
-        V_1(:,:)=0.0_dp
-        Inv_1(:,:)=0.0_dp
+!         A_1(:,:)=0.0_dp
+!         Th_1(:,:)=0.0_dp
+!         Y_1(:,:)=0.0_dp
+!         V_1(:,:)=0.0_dp
+!         Inv_1(:,:)=0.0_dp
         
-        write(*,*) 'flag1'
+!         write(*,*) 'flag1'
 
-        DO i=1, arrays_dimension_outliers
-        read(13,*) logz(i),mb_02(i),dmb(i)
-        Y_1(i,1)=mb_02(i)
-        END DO
-! 
-      write(*,*) 'flag2'
+!         DO i=1, arrays_dimension_outliers
+!         read(13,*) logz(i),mb_02(i),dmb(i)
+!         Y_1(i,1)=mb_02(i)
+!         END DO
+! ! 
+!       write(*,*) 'flag2'
 
-        DO i=1, arrays_dimension_outliers
-            A_1(i,1)=1
-            A_1(i,2)=logz(i)
-        END DO
-! 
-      write(*,*) 'flag3'
+!         DO i=1, arrays_dimension_outliers
+!             A_1(i,1)=1
+!             A_1(i,2)=logz(i)
+!         END DO
+! ! 
+!       write(*,*) 'flag3'
 
-        DO i=1, arrays_dimension_outliers
-            DO j=1, arrays_dimension_outliers
-                IF (i==j) then  
-                    Inv_1(i,j)=1/((0.2*dmb(i))**2)
-                ELSE
-                    Inv_1(i,j)=0.0_dp
-                END IF
-            END DO
-        END DO
+!         DO i=1, arrays_dimension_outliers
+!             DO j=1, arrays_dimension_outliers
+!                 IF (i==j) then  
+!                     Inv_1(i,j)=1/((0.2*dmb(i))**2)
+!                 ELSE
+!                     Inv_1(i,j)=0.0_dp
+!                 END IF
+!             END DO
+!         END DO
 
-        write(*,*) 'flag3'
+!         write(*,*) 'flag3'
 
-        DO i=1, arrays_dimension_outliers
-            DO j=1,2
-                AT_1(j,i)=A_1(i,j)
-            END DO
-        END DO
+!         DO i=1, arrays_dimension_outliers
+!             DO j=1,2
+!                 AT_1(j,i)=A_1(i,j)
+!             END DO
+!         END DO
         
         
         

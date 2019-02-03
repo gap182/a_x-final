@@ -1,5 +1,5 @@
 0.01    !zmin
-0.023     !zmax
+0.4     !zmax
 -0.55   !q_0
 1       !j_0
 hlsp_ps1cosmo_panstarrs_gpc1_all_model_v1_ancillary-c11.fitres	!name
