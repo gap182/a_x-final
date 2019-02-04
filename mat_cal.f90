@@ -22,13 +22,14 @@ MODULE mat_cal
 
         DO i=1, arrays_dimension   
             
-                IF (realmatrix(i,8) > z_min_1 .and. realmatrix(i,8) < z_max_1) THEN
-                    IF (realmatrix(i,21) < 3.0 .and. realmatrix(i,21)>-3.0) THEN
-                        IF (realmatrix(i,23) < 0.3 .and. realmatrix(i,23)>-0.3) THEN
-                            IF (realmatrix(i,34)>0.001) THEN
-                                IF (realmatrix(i,20)<2.0) THEN
-                                    IF (realmatrix(i,22)<1.5) THEN
-                                        IF (realmatrix(i,26)<0.2) THEN
+                IF (realmatrix(i,7) > z_min_1 .and. realmatrix(i,7) < z_max_1) THEN
+                    IF (realmatrix(i,18) < 3.0 .and. realmatrix(i,18)>-3.0) THEN
+                        IF (realmatrix(i,20) < 0.3 .and. realmatrix(i,20)>-0.3) THEN
+                            IF (realmatrix(i,31)>0.01) THEN
+                                IF (realmatrix(i,17)<2.0) THEN
+                                    IF (realmatrix(i,19)<1.0) THEN
+                    !                     IF (realmatrix(i,26)<0.2) THEN
+                                            if (realmatrix(i,37)>-3.5 .and. realmatrix(i,37)<3.5) then
                                   write(100,*) i     
                     ! write(11,*) realmatrix(i,8),realmatrix(i,25)
                     !     logz(i)=LOG10(299792.458*realmatrix(i,8)*&

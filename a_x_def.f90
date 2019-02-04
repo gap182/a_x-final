@@ -15,6 +15,11 @@ read(*,*) col   !número de columnas a leer del archivo
 read(*,*) intcol    !número de columnas del archivo que contienen datos enteros =
 read(*,*) charcol   !número de columnas del archivo que contienen datos caracteres
 
+allocate(intpos(intcol),charpos(charcol))
+
+read(*,*) (intpos(i),i=1,intcol)
+read(*,*) (charpos(i),i=1,charcol)
+
 open(10, file=name, form='formatted', status='old',action='read')
 
 arrays_dimension=0
@@ -45,22 +50,23 @@ close(10)
 write(*,*) 'The number of data points are:', arrays_dimension
 
 allocate(realmatrix(arrays_dimension,col),intmatrix(arrays_dimension,col),charmatrix(arrays_dimension,col), &
-intpos(intcol),charpos(charcol),logz(arrays_dimension), mb_02(arrays_dimension), dmb(arrays_dimension))
+logz(arrays_dimension), mb_02(arrays_dimension), dmb(arrays_dimension))
 
 !Se debe agregar manualmente el arreglo intpos y charpos que contienen
 !la posición de columnas que contienen enteros y caracteres respectivamente
 
-intpos = (/3,4,5,7,13,32,47,54/)
-charpos = (/1,2,6/)
 
 call read_data(name,col,arrays_dimension,realmatrix,intcol,intmatrix,charcol,charmatrix,disc,intpos,charpos)
 
-do i=1,arrays_dimension 
-    write(600,*) realmatrix(i,8)
-end do
+! do i=1,arrays_dimension 
+!     write(600,*) realmatrix(i,8)   
+! end do
 
-write(*,*) realmatrix(700,8)
+! write(*,*) realmatrix(683,8), z_min, z_max
 
+! if (realmatrix(683,8) > z_min .and. realmatrix(683,8) < z_max) then
+!     write(*,*) 'estoy aquí'
+! end if
 CALL matrices(z_min,z_max,q_0,j_0,A,Th,Y,V,Inv,AT)
 
 write(*,*) 'the number of fitter data are:', arrays_dimension_outliers 

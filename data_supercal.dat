@@ -1,0 +1,12 @@
+0.01    !zmin
+0.15    !zmax
+-0.55   !q_0
+1       !j_0
+supercal.fitres  !name
+9      !initial rows to discard
+41      !number of columns in the data
+4       !number of columns with integer data
+4	!number of columns with character data
+4 5 29 42     !integer positions
+1 2 3 6   !character positions
+
